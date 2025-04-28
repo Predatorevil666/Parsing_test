@@ -31,26 +31,26 @@ if __name__ == '__main__':
     # Получите путь до архива, объединив имя файла с директорией.
     archive_path = downloads_dir / filename
 
-    # # Загрузка архива по ссылке.
-    # response = session.get(archive_url)
-    #
-    # # В бинарном режиме открывается файл на запись по указанному пути.
-    # with open(archive_path, 'wb') as file:
-    #     # Полученный ответ записывается в файл.
-    #     file.write(response.content)
+    # Загрузка архива по ссылке.
+    response = session.get(archive_url)
 
-    # Загрузка с tqdm (упрощенный вариант)
-    response = session.get(archive_url, stream=True)
-    total_size = int(response.headers.get('content-length', 0))
-
+    # В бинарном режиме открывается файл на запись по указанному пути.
     with open(archive_path, 'wb') as file:
-        # Просто оборачиваем response.iter_content() в tqdm
-        for chunk in tqdm(
-                response.iter_content(chunk_size=1024),
-                total=total_size // 1024 + 1,  # Округляем до количества чанков
-                unit='KB',  # Кибибайты вместо байтов
-                desc=filename,
-                leave=True  # Оставляет прогресс-бар после завершения
-        ):
-            if chunk:
-                file.write(chunk)
+        # Полученный ответ записывается в файл.
+        file.write(response.content)
+
+    # # Загрузка с tqdm (упрощенный вариант)
+    # response = session.get(archive_url, stream=True)
+    # total_size = int(response.headers.get('content-length', 0))
+    #
+    # with open(archive_path, 'wb') as file:
+    #     # Просто оборачиваем response.iter_content() в tqdm
+    #     for chunk in tqdm(
+    #             response.iter_content(chunk_size=1024),
+    #             total=total_size // 1024 + 1,  # Округляем до количества чанков
+    #             unit='KB',  # Кибибайты вместо байтов
+    #             desc=filename,
+    #             leave=True  # Оставляет прогресс-бар после завершения
+    #     ):
+    #         if chunk:
+    #             file.write(chunk)
